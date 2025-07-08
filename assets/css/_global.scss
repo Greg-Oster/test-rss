@@ -1,0 +1,37 @@
+:root {
+  --color-primary: #0029FF;
+  --color-secondary: #DCDCDC;
+  --color-text: #000000;
+
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  --font-family-base: 'Arial', sans-serif;
+  --font-size-base: 14px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+
+  --border-radius-md: 3px;
+}
+
+body {
+  font-family: var(--font-family-base), sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --font-size-base: 14px;
+  }
+}

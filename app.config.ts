@@ -12,8 +12,9 @@ export default defineAppConfig({
     cssLayer: 'base', // set the css layer to inject to
   },
   appNavigation: [
-    { label: 'Все', link: '/' },
-    { label: 'Мос.ру', link: 'mosru' },
-    { label: 'Лента.ру', link: 'lenta' },
+    { label: 'Все', link: '/', dataUrl: ['https://www.mos.ru/rss', 'https://lenta.ru/rss/articles', 'https://habr.com/ru/rss/articles/'] },
+    { label: 'Мос.ру', link: 'mosru', dataUrl: 'https://www.mos.ru/rss' },
+    { label: 'Лента.ру', link: 'lenta', dataUrl: 'https://lenta.ru/rss' },
+    { label: 'Хабр', link: 'habr', dataUrl: 'https://habr.com/ru/rss/articles/' },
   ],
 })

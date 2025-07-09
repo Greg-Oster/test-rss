@@ -3,7 +3,7 @@ const appConfig = useAppConfig()
 </script>
 
 <template>
-  <div class="container">
+  <div class="container default-layout">
     <UiFilterView />
     <AppNavigation :links="appConfig.appNavigation">
       <UiListModeSwitcher />
@@ -13,5 +13,9 @@ const appConfig = useAppConfig()
 </template>
 
 <style scoped lang="scss">
-
+.default-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 </style>

@@ -2,7 +2,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
-  css: ['~/assets/css/main.scss'],
+  css: ['~/assets/style/main.scss'],
   modules: [
     '@pinia/nuxt',
     '@vueuse/nuxt',
@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     customCollections: [
       {
         prefix: 'icon',
-        dir: './assets/svg',
+        dir: '~/assets/svg',
       },
     ],
   },

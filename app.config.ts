@@ -11,4 +11,9 @@ export default defineAppConfig({
     },
     cssLayer: 'base', // set the css layer to inject to
   },
+  appNavigation: [
+    { label: 'Все', link: '/' },
+    { label: 'Мос.ру', link: 'mosru' },
+    { label: 'Лента.ру', link: 'lenta' },
+  ],
 })

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+const appConfig = useAppConfig()
 </script>
 
 <template>
   <div class="container">
     <UiFilterView />
-    <AppNavigation>
+    <AppNavigation :links="appConfig.appNavigation">
       <UiListModeSwitcher />
     </AppNavigation>
     <slot />

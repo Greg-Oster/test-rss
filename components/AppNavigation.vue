@@ -7,7 +7,7 @@ defineProps({
   links: {
     type: Array as PropType<singleLink[]>,
     required: false,
-    default: () => [{ label: 'Все', link: '/' }, { label: 'test1', link: 'mosru' }, { label: 'test2', link: 'lenta' }],
+    default: () => [{ label: 'Все', link: '/' }],
   },
 })
 </script>
@@ -35,5 +35,9 @@ defineProps({
     display: flex;
     gap: 1rem;
   }
+}
+
+.router-link-active {
+  color: var(--color-primary);
 }
 </style>

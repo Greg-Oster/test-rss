@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import UiListItem from '~/components/Ui/List/UiListItem.vue'
 import UiListPaginator from '~/components/Ui/List/UiListPaginator.vue'
 import { useUiStore } from '~/stores/ui'
@@ -23,6 +23,8 @@ const props = defineProps({
 })
 
 const uiStore = useUiStore()
+const route = useRoute()
+const router = useRouter()
 
 interface RssItem {
   title: string
@@ -33,10 +35,27 @@ interface RssItem {
   image?: string
 }
 
-// Pagination
-const currentPage = ref(1)
 const itemsPerPage = 5
 const totalItems = computed(() => props.items.length)
+
+const pageParam = route.query.page
+const initialPage = Math.max(1, Number.parseInt(pageParam as string) || 1)
+const currentPage = ref(initialPage)
+
+watch(currentPage, (newPage) => {
+  const maxPage = Math.ceil(totalItems.value / itemsPerPage)
+  const isPageValid = newPage >= 1 && newPage <= maxPage
+  const isPageChanged = newPage.toString() !== route.query.page
+
+  if (isPageValid && isPageChanged) {
+    router.push({
+      query: {
+        ...route.query,
+        page: newPage.toString(),
+      },
+    })
+  }
+})
 
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -66,8 +85,8 @@ const paginatedItems = computed(() => {
           :key="item.link"
           :title="item.title"
           :link="item.link"
-          :description="item.description"
-          :formatted-date="item.formattedDate"
+          :description="item?.description"
+          :formatted-date="item?.formattedDate"
           :source="item.source"
           :image="item.image"
         />

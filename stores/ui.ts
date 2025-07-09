@@ -19,5 +19,7 @@ export const useUiStore = defineStore('ui', {
     },
   },
 
-  persist: true, // Use default localStorage persistence
+  persist: {
+    storage: piniaPluginPersistedstate.cookies(),
+  },
 })

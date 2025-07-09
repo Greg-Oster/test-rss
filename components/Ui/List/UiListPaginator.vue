@@ -106,7 +106,7 @@ function changePage(page: PageIdentifier): void {
     }
 
     &--active {
-      color: var(--primary-color);
+      color: var(--color-primary);
     }
   }
 }

@@ -17,5 +17,6 @@ const appConfig = useAppConfig()
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-bottom: 40px;
 }
 </style>

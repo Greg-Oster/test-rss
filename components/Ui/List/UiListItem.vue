@@ -39,10 +39,12 @@ const uiStore = useUiStore()
   <div class="list-item" :class="{ 'list-item--tile': uiStore.isTileView, 'list-item--list': uiStore.isListView }">
     <!-- List view layout -->
     <template v-if="uiStore.isListView">
-      <NuxtImg v-if="image" :src="image" class="list-item__image" alt="Article image" loading="lazy" />
-      <div class="list-item__content">
-        <a :href="link" target="_blank" class="list-item__title">{{ title }}</a>
-        <div v-if="description" class="list-item__description" v-html="description" />
+      <div class="list-item__body">
+        <NuxtImg v-if="image" :src="image" class="list-item__image" alt="Article image" loading="lazy" />
+        <div class="list-item__content">
+          <a :href="link" target="_blank" class="list-item__title">{{ title }}</a>
+          <div v-if="description" class="list-item__description" v-html="description" />
+        </div>
       </div>
       <div class="list-item__footer">
         <div v-if="source" class="list-item__source">
@@ -55,7 +57,7 @@ const uiStore = useUiStore()
     </template>
 
     <!-- Tile view layout -->
-    <template v-else>
+    <template v-if="uiStore.isTileView">
       <a :href="link" target="_blank" class="list-item__title">{{ title }}</a>
       <div v-if="description" class="list-item__description" v-html="description" />
       <div class="list-item__footer">
@@ -72,14 +74,20 @@ const uiStore = useUiStore()
 
 <style scoped lang="scss">
 .list-item {
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   border-radius: var(--border-radius-md);
   box-shadow: var(--shadow-default);
 
+  &__body {
+    display: flex;
+    gap: 20px;
+  }
+
   // List view styles
   &--list {
     display: flex;
-    gap: 20px;
 
     .list-item__content {
       flex: 1;

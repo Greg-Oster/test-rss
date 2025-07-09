@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
     const urlParam = query.url
 
     if (!urlParam) {
-      throw createError({
+      return createError({
         statusCode: 400,
         message: 'URL parameter is required',
       })
@@ -31,11 +31,16 @@ export default defineEventHandler(async (event) => {
         const items = []
 
         // Parse the XML using regex (simplified approach)
+        // Find all item tags in the XML
         const itemRegex = /<item>([\s\S]*?)<\/item>/g
-        let match
 
-        while ((match = itemRegex.exec(text)) !== null) {
-          const itemContent = match[1]
+        // Get all matches at once instead of using exec in a loop
+        const allMatches = text.match(itemRegex) || []
+
+        // Process each match
+        for (const matchText of allMatches) {
+          // Extract the content between item tags
+          const itemContent = matchText.replace(/<item>([\s\S]*?)<\/item>/, '$1')
 
           // Extract the required fields
           const title = extractTag(itemContent, 'title') || ''
@@ -45,7 +50,12 @@ export default defineEventHandler(async (event) => {
 
           // Extract image from description if present
           const imageMatch = description.match(/<img[^>]+src="([^">]+)"/)
-          const image = imageMatch ? imageMatch[1] : null
+
+          // Extract image from enclosure tag if present (used by Lenta.ru and others)
+          const enclosureMatch = itemContent.match(/<enclosure[^>]+url="([^">]+)"[^>]*>/)
+
+          // Use image from description or enclosure, prioritizing description
+          const image = imageMatch ? imageMatch[1] : (enclosureMatch ? enclosureMatch[1] : null)
 
           // Remove the image tag from description if it was found
           let cleanDescription = description
@@ -98,7 +108,8 @@ export default defineEventHandler(async (event) => {
 function extractTag(content: string, tag: string): string | null {
   const regex = new RegExp(`<${tag}>(.*?)<\/${tag}>`, 's')
   const match = content.match(regex)
-  if (!match) return null
+  if (!match)
+    return null
 
   // Remove CDATA tags
   let extractedContent = match[1].trim()

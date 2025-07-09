@@ -8,12 +8,13 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@nuxt/icon',
+    '@nuxt/image',
   ],
   icon: {
     customCollections: [
       {
         prefix: 'icon',
-        dir: '~/assets/svg',
+        dir: './assets/svg',
       },
     ],
   },

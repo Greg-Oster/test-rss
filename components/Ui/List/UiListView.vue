@@ -2,15 +2,7 @@
 import { computed, ref } from 'vue'
 import UiListItem from '~/components/Ui/List/UiListItem.vue'
 import UiListPaginator from '~/components/Ui/List/UiListPaginator.vue'
-
-interface RssItem {
-  title: string
-  link: string
-  description: string
-  pubDate: string
-  formattedDate: string
-  image?: string
-}
+import { useUiStore } from '~/stores/ui'
 
 const props = defineProps({
   items: {
@@ -30,6 +22,17 @@ const props = defineProps({
   },
 })
 
+const uiStore = useUiStore()
+
+interface RssItem {
+  title: string
+  link: string
+  description: string
+  pubDate: string
+  formattedDate: string
+  image?: string
+}
+
 // Pagination
 const currentPage = ref(1)
 const itemsPerPage = 5
@@ -45,19 +48,19 @@ const paginatedItems = computed(() => {
 <template>
   <div class="list">
     <div v-if="loading" class="list__loading">
-      Loading RSS feed...
+      Загрузка...
     </div>
 
     <div v-else-if="error" class="list__error">
-      Error: {{ error }}
+      Ошибка: {{ error }}
     </div>
 
     <div v-else-if="items.length === 0" class="list__empty">
-      No items found.
+      Записей не найдено
     </div>
 
     <template v-else>
-      <div class="list__items">
+      <div class="list__items" :class="{ 'list__items--tile': uiStore.isTileView }">
         <UiListItem
           v-for="item in paginatedItems"
           :key="item.link"
@@ -91,6 +94,12 @@ const paginatedItems = computed(() => {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+
+    &--tile {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
   }
 
   &__loading,

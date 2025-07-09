@@ -4,7 +4,6 @@ import appConfig from '~/app.config'
 const mainPageConfig = appConfig.appNavigation.find(item => item.link === '/')
 const navigationConfig = appConfig.appNavigation
 
-
 const { data, pending: loading, error } = useFetch(`/api/rss`, {
   query: {
     url: mainPageConfig?.dataUrl,
@@ -13,12 +12,15 @@ const { data, pending: loading, error } = useFetch(`/api/rss`, {
 })
 
 function getSource() {
-  if (!data?.value?.items) return []
+  if (!data?.value?.items)
+    return []
 
   return data.value.items.map((item) => {
-    const matchingNavItem = navigationConfig.find(navItem => {
-      if (navItem.link === '/' || !navItem.dataUrl) return false
-      if (typeof navItem.dataUrl !== 'string') return false
+    const matchingNavItem = navigationConfig.find((navItem) => {
+      if (navItem.link === '/' || !navItem.dataUrl)
+        return false
+      if (typeof navItem.dataUrl !== 'string')
+        return false
 
       const hostname = new URL(navItem.dataUrl).hostname
       return item.link.includes(hostname)

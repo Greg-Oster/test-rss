@@ -6,21 +6,18 @@ export const useUiStore = defineStore('ui', {
   }),
 
   getters: {
-    getTest: (state) => {
-      return state.count
-    },
+    isListView: state => state.view === 1,
+    isTileView: state => state.view === 2,
   },
 
   actions: {
-    increment() {
-      this.test++
+    setListView() {
+      this.view = 1
     },
-    decrement() {
-      this.test--
+    setTileView() {
+      this.view = 2
     },
   },
 
-  persist: {
-    storage: piniaPluginPersistedstate.cookies(),
-  },
+  persist: true, // Use default localStorage persistence
 })

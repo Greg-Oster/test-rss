@@ -1,5 +1,11 @@
+@use "sass:math";
+
 @mixin max-width($width: 768px) {
   @media (max-width: #{$width}) {
     @content;
   }
+}
+
+@function pacing($multiplier) {
+  @return math.div($multiplier, 1) * 5px;
 }

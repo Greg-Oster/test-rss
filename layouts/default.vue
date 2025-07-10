@@ -4,8 +4,8 @@ const appConfig = useAppConfig()
 
 <template>
   <div class="container default-layout">
-    <UiFilterView />
-    <AppNavigation :links="appConfig.appNavigation">
+    <UiFilterView class="heading" />
+    <AppNavigation :links="appConfig.appNavigation" class="list-navigation">
       <UiListModeSwitcher />
     </AppNavigation>
     <slot />
@@ -16,8 +16,27 @@ const appConfig = useAppConfig()
 .default-layout {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding-bottom: 40px;
-  padding-top: 40px;
+  padding-bottom: pacing(7);
+  padding-top: pacing(7);
+
+  .heading {
+    display: flex;
+    padding-bottom: pacing(7);
+    margin-bottom: pacing(5);
+    border-bottom: 1px solid var(--color-secondary);
+
+    @include max-width(){
+      padding-bottom: pacing(4);
+      margin-bottom: pacing(4);
+    }
+  }
+
+  .list-navigation {
+    margin-bottom: pacing(5);
+
+    @include max-width(){
+      margin-bottom: pacing(4);
+    }
+  }
 }
 </style>

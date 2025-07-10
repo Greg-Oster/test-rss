@@ -1,8 +1,11 @@
+
 :root {
   --color-primary: #0029FF;
   --color-secondary: #DCDCDC;
   --color-text: #000000;
+  --color-background: #FCFCFC;
 
+  --space-unit: 5px;
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
@@ -13,6 +16,7 @@
   --font-size-base: 14px;
   --font-weight-normal: 400;
   --font-weight-bold: 700;
+  --h2-font-size: 16px;
 
   --border-radius-md: 3px;
 

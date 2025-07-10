@@ -91,7 +91,8 @@ function changePage(page: PageIdentifier): void {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: pacing(2);
+  font-weight: bold;
 
   &__btn {
     display: flex;

@@ -2,15 +2,12 @@
 import { computed } from 'vue'
 
 const emit = defineEmits(['reset'])
-const route = useRoute()
-const router = useRouter()
+const { hasParams, clearParams } = useQueryParams()
 
-const hasQueryParams = computed(() => {
-  return Object.keys(route.query).length > 0
-})
+const hasQueryParams = computed(() => hasParams())
 
 function handleReset() {
-  router.push({ path: route.path, query: {} })
+  clearParams()
   emit('reset')
 }
 </script>
@@ -33,6 +30,7 @@ function handleReset() {
     box-shadow: var(--shadow-default);
     border-radius: 50%;
     transition: background-color 0.3s ease;
+    flex-shrink: 0;
 
     &.active {
       .reset-btn__icon {

@@ -20,10 +20,26 @@
   justify-content: space-between;
   align-items: center;
 
+  @include max-width(){
+    flex-direction: column;
+    gap: pacing(4);
+  }
+
   &__title {
     display: flex;
     align-items:  center;
     gap: 1rem;
+
+    @include max-width(){
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  &__search {
+    @include max-width(){
+      width: 100%;
+    }
   }
 }
 </style>

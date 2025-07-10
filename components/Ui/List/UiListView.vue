@@ -25,7 +25,7 @@ const props = defineProps({
 
 const uiStore = useUiStore()
 const route = useRoute()
-const router = useRouter()
+const { getParam, addParam } = useQueryParams()
 
 interface RssItem {
   title: string
@@ -39,35 +39,33 @@ interface RssItem {
 const itemsPerPage = appConfig.list.itemsPerPage
 const totalItems = computed(() => props.items.length)
 
-const pageParam = route.query.page
+const pageParam = getParam('page')
 const initialPage = Math.max(1, Number.parseInt(pageParam as string) || 1)
 const currentPage = ref(initialPage)
 
-// Watch for changes to the current page and update URL
 watch(currentPage, (newPage) => {
   const maxPage = Math.ceil(totalItems.value / itemsPerPage)
-  const isPageValid = newPage >= 1 && newPage <= maxPage
-  const isPageChanged = newPage.toString() !== route.query.page
+  const isPageValid = newPage > 1 && newPage <= maxPage
+  const isPageChanged = newPage.toString() !== getParam('page')
 
   if (isPageValid && isPageChanged) {
-    router.push({
-      query: {
-        ...route.query,
-        page: newPage.toString(),
-      },
-    })
+    addParam('page', newPage.toString())
   }
 })
 
-// Watch for changes to totalItems and adjust currentPage if needed
 watch(totalItems, (newTotal) => {
   const maxPage = Math.ceil(newTotal / itemsPerPage)
 
-  // If current page is greater than max page, adjust it
   if (currentPage.value > maxPage && maxPage > 0) {
     currentPage.value = maxPage
   }
 })
+
+watch(() => route.query, () => {
+  if (!route.query.page) {
+    currentPage.value = 1
+  }
+}, { deep: true })
 
 const paginatedItems = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage
@@ -119,17 +117,21 @@ const paginatedItems = computed(() => {
 .list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: pacing(10);
 
   &__items {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: pacing(4);
 
     &--tile {
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 1rem;
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+
+      @include max-width(){
+        grid-template-columns: repeat(1, 1fr);
+      }
     }
   }
 

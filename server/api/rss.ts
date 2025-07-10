@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
         if (!response.ok) {
           console.error(`Failed to fetch RSS feed from ${url}: ${response.statusText}`)
-          return [] // Return empty array for this URL
+          return []
         }
 
         const text = await response.text()
@@ -107,7 +107,7 @@ export default defineEventHandler(async (event) => {
   }
 })
 
-// Helper function to extract tag content
+// TODO: extract to utils?
 function extractTag(content: string, tag: string): string | null {
   const regex = new RegExp(`<${tag}>(.*?)<\/${tag}>`, 's')
   const match = content.match(regex)

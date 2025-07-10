@@ -30,6 +30,8 @@ defineProps({
 .navigation {
   display: flex;
   justify-content: space-between;
+  font-weight: bold;
+  color: var(--color-primary);
 
   &__item-list {
     display: flex;
@@ -38,6 +40,6 @@ defineProps({
 }
 
 .router-link-active {
-  color: var(--color-primary);
+  color: black;
 }
 </style>

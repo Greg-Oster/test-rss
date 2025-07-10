@@ -1,15 +1,28 @@
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query'
 import appConfig from '~/app.config'
 
 const route = useRoute()
 const routeName = route.params.name as string
 const navItem = appConfig.appNavigation.find(item => item.link === routeName)
 
-const { data, pending: loading, error } = useFetch(`/api/rss`, {
-  query: {
-    url: navItem?.dataUrl,
-  },
-  immediate: !!navItem?.dataUrl,
+async function fetchRssData() {
+  if (!navItem?.dataUrl)
+    return null
+
+  return $fetch('/api/rss', {
+    query: { url: navItem.dataUrl },
+  })
+}
+
+const { data, isLoading: loading, error, suspense } = useQuery({
+  queryKey: ['rss', navItem?.dataUrl], // Уникальный ключ для кеширования
+  queryFn: fetchRssData,
+  enabled: !!navItem?.dataUrl,
+})
+
+onServerPrefetch(async () => {
+  await suspense()
 })
 
 definePageMeta({
@@ -20,12 +33,23 @@ definePageMeta({
     return validRoutes.includes(routeName)
   },
 })
+
+const searchQuery = computed(() => route.query.search?.toString().toLowerCase() || '')
+
+const filteredItems = computed(() => {
+  const items = data.value?.items || []
+  if (!searchQuery.value)
+    return items
+
+  return items.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.value)
+    || (item.description && item.description.toLowerCase().includes(searchQuery.value)),
+  )
+})
 </script>
 
 <template>
-  <div>
-    <UiListView :items="data?.items || []" :loading="loading" :error="error" />
-  </div>
+  <UiListView :items="filteredItems" :loading="loading" :error="error" />
 </template>
 
 <style scoped lang="scss">

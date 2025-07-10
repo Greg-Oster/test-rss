@@ -8,6 +8,9 @@ export default defineAppConfig({
     mode: 'svg', // default <Icon> mode applied
     cssLayer: 'base', // set the css layer to inject to
   },
+  list: {
+    itemsPerPage: 6, // default number of items per page
+  },
   appNavigation: [
     { label: 'Все', link: '/', dataUrl: ['https://www.mos.ru/rss', 'https://lenta.ru/rss/articles', 'https://habr.com/ru/rss/articles/'] },
     { label: 'Мос.ру', link: 'mosru', dataUrl: 'https://www.mos.ru/rss' },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import appConfig from '~/app.config'
 
+const route = useRoute()
 const mainPageConfig = appConfig.appNavigation.find(item => item.link === '/')
 const navigationConfig = appConfig.appNavigation
 
@@ -33,13 +34,24 @@ function getSource() {
   })
 }
 
-const cSourcedData = computed(() => getSource())
+// Get search query from URL
+const searchQuery = computed(() => route.query.search?.toString().toLowerCase() || '')
+
+// Filter items based on search query
+const filteredItems = computed(() => {
+  const items = getSource()
+  if (!searchQuery.value)
+    return items
+
+  return items.filter(item =>
+    item.title.toLowerCase().includes(searchQuery.value)
+    || (item.description && item.description.toLowerCase().includes(searchQuery.value)),
+  )
+})
 </script>
 
 <template>
-  <div>
-    <UiListView :items="cSourcedData" :loading="loading" :error="error" />
-  </div>
+  <UiListView :items="filteredItems" :loading="loading" :error="error" />
 </template>
 
 <style scoped lang="scss">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import appConfig from '~/app.config'
 import UiListItem from '~/components/Ui/List/UiListItem.vue'
 import UiListPaginator from '~/components/Ui/List/UiListPaginator.vue'
 import { useUiStore } from '~/stores/ui'
@@ -35,13 +36,14 @@ interface RssItem {
   image?: string
 }
 
-const itemsPerPage = 5
+const itemsPerPage = appConfig.list.itemsPerPage
 const totalItems = computed(() => props.items.length)
 
 const pageParam = route.query.page
 const initialPage = Math.max(1, Number.parseInt(pageParam as string) || 1)
 const currentPage = ref(initialPage)
 
+// Watch for changes to the current page and update URL
 watch(currentPage, (newPage) => {
   const maxPage = Math.ceil(totalItems.value / itemsPerPage)
   const isPageValid = newPage >= 1 && newPage <= maxPage
@@ -54,6 +56,16 @@ watch(currentPage, (newPage) => {
         page: newPage.toString(),
       },
     })
+  }
+})
+
+// Watch for changes to totalItems and adjust currentPage if needed
+watch(totalItems, (newTotal) => {
+  const maxPage = Math.ceil(newTotal / itemsPerPage)
+
+  // If current page is greater than max page, adjust it
+  if (currentPage.value > maxPage && maxPage > 0) {
+    currentPage.value = maxPage
   }
 })
 

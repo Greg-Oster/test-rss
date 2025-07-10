@@ -113,6 +113,10 @@ const uiStore = useUiStore()
     display: flex;
     flex-direction: column;
 
+    @include max-width() {
+      width: 100%;
+    }
+
     .list-item__footer {
       display: flex;
       justify-content: space-between;
